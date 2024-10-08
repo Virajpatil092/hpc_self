@@ -16,8 +16,10 @@ int fibonacci(int n) {
 }
 
 int main() {
-    int n = 10;
+    int n = 20;
     int result;
+
+    double start_time = omp_get_wtime();
 
     #pragma omp parallel
     {
@@ -25,7 +27,20 @@ int main() {
         result = fibonacci(n);
     }
 
+    double end_time = omp_get_wtime();
+
+    printf("Time taken parallel: %f\n", end_time - start_time);
+
+    double start_time_seq = omp_get_wtime();
+
+    result = fibonacci(n);
+
+    double end_time_seq = omp_get_wtime();
+
+    printf("Time taken seq: %f\n", end_time_seq - start_time_seq);
     printf("Fibonacci(%d) = %d\n", n, result);
+
+    printf("speed_up is %f\n", (end_time_seq - start_time_seq) / (end_time - start_time));
 
     return 0;
 }
